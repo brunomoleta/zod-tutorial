@@ -1,13 +1,16 @@
 // CODE
 
 import { expect, it } from "vitest";
-import { z } from "zod";
+import {array, z} from "zod";
 
 const StarWarsPerson = z.object({
   name: z.string(),
 });
 
-const StarWarsPeopleResults = z.unknown();
+/*const StarWarsPeopleResults = z.array(StarWarsPerson);*/
+const StarWarsPeopleResults = z.object({
+  results: array(StarWarsPerson)
+});
 //                            ^ 🕵️‍♂️
 
 export const fetchStarWarsPeople = async () => {
@@ -16,6 +19,7 @@ export const fetchStarWarsPeople = async () => {
   ).then((res) => res.json());
 
   const parsedData = StarWarsPeopleResults.parse(data);
+  console.log(parsedData)
 
   return parsedData.results;
 };
