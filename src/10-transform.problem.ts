@@ -1,11 +1,15 @@
 // CODE
 
 import { expect, it } from "vitest";
-import { z } from "zod";
+import {string, z} from "zod";
 
 const StarWarsPerson = z.object({
   name: z.string(),
-});
+}).transform((characterName) => ({
+  ...characterName,
+  nameAsArray: characterName.name.split(" ")
+}))
+
 //^ 🕵️‍♂️
 
 const StarWarsPeopleResults = z.object({
@@ -19,6 +23,7 @@ export const fetchStarWarsPeople = async () => {
 
   const parsedData = StarWarsPeopleResults.parse(data);
 
+  console.log(parsedData.results)
   return parsedData.results;
 };
 
